@@ -1,0 +1,42 @@
+import java.sql.*;
+
+public class Lab1 {
+    public static void main(String[] args) throws Exception {
+        Connection conn1 = null;
+
+        String url = "jdbc:postgresql://127.0.0.1:5432/test",
+                userName = "postgres", userPassd = "postgres";
+
+        Class.forName("org.postgresql.Driver");
+
+        conn1 = DriverManager.getConnection(url, userName, userPassd);
+
+        Statement stat1 = conn1.createStatement();
+
+        ResultSet rs1 = stat1.executeQuery("select * from market");
+
+        System.out.println("Первый запрос: ");
+        while(rs1.next()) {
+            System.out.println(rs1.getInt(1) + " " + rs1.getString(2) + " " + rs1.getInt(3)+ " " + rs1.getInt(4));
+        }
+
+        rs1.close();
+
+        stat1.close();
+
+        Statement stat2 = conn1.createStatement();
+
+        ResultSet rs2 = stat2.executeQuery("select * from market where price > 100000");
+
+        System.out.println("\nВторой запрос: ");
+        while(rs2.next()) {
+            System.out.println(rs2.getInt(1) + " " + rs2.getString(2) + " " + rs2.getInt(3)+ " " + rs2.getInt(4));
+        }
+
+        rs2.close();
+
+        stat2.close();
+
+        conn1.close();
+    }
+}
